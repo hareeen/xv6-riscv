@@ -1,0 +1,8 @@
+services:
+  xv6:
+    image: wtakuo/xv6-env
+    volumes:
+      - type: bind
+        target: /home/xv6/xv6-riscv
+        source: .
+    entrypoint: make qemu
