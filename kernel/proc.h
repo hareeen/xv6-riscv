@@ -95,7 +95,11 @@ struct proc {
   // wait_lock must be held when using this:
   struct proc *parent;         // Parent process
 
-  // these are private to the process, so p->lock need not be held.
+
+  // these are private to the process, so p->lock need not be held
+  int is_thread;
+  uint64 tstack;
+  
   uint64 kstack;               // Virtual address of kernel stack
   uint64 sz;                   // Size of process memory (bytes)
   pagetable_t pagetable;       // User page table

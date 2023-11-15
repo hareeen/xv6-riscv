@@ -2,8 +2,10 @@ struct stat;
 
 // system calls
 int fork(void);
+int clone(void (*)(), void*);
 int exit(int) __attribute__((noreturn));
 int wait(int*);
+int join(int*, void**);
 int pipe(int*);
 int write(int, const void*, int);
 int read(int, void*, int);
@@ -40,3 +42,12 @@ void free(void*);
 int atoi(const char*);
 int memcmp(const void *, const void *, uint);
 void *memcpy(void *, const void *, uint);
+int thread_create(void (*)());
+int thread_join();
+
+struct lock {
+  uint locked;
+};
+void initlock(struct lock*);
+void acquire(struct lock*);
+void release(struct lock*);

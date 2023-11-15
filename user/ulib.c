@@ -145,3 +145,43 @@ memcpy(void *dst, const void *src, uint n)
 {
   return memmove(dst, src, n);
 }
+
+int
+thread_create(void (*fn)())
+{
+  void *stack = malloc(4096);
+
+  return clone(fn, stack);
+}
+
+int
+thread_join()
+{
+  void *stack;
+
+  int ret = join(0, &stack);
+  free(stack);
+
+  return ret;
+}
+
+void
+initlock(struct lock *lk)
+{
+  lk->locked = 0;
+}
+
+void
+acquire(struct lock *lk)
+{
+  while(__sync_lock_test_and_set(&lk->locked, 1) != 0)
+    ;
+  __sync_synchronize();
+}
+
+void
+release(struct lock *lk)
+{
+  __sync_synchronize();
+  __sync_lock_release(&lk->locked);
+}
